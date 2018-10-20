@@ -138,6 +138,13 @@ function handleEvent(event) {
         text: data
       });
   }
+  else if(even.message.text === '/info'){
+      var data = "Hi I'm to do list bot XD XD XD\n/add <input> \n/end <index>\n/show\n/endall\n/yusficeo";
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: data
+      });
+  }
 }
 
 app.listen(app.get('port'), function(err){
