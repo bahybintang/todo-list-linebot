@@ -88,12 +88,17 @@ function handleEvent(event) {
                 else{
                     result.messages.splice(index-1, 1);
                     dataservice.update(result);
-                    var i = 1;
-                    data += "Your list : ";
-                    result.messages.forEach(element => {
-                        data += "\n" + i + ". " + element;
-                        i++;
-                    });
+                    if(result.message.length === 0){
+                        data = "You have no event!";
+                    }
+                    else{
+                        var i = 1;
+                        data += "Your list : ";
+                        result.messages.forEach(element => {
+                            data += "\n" + i + ". " + element;
+                            i++;
+                        });
+                    }
                 }
             }
             return client.replyMessage(event.replyToken, {
