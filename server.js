@@ -21,6 +21,29 @@ mongoose.connect('mongodb://bintang-linebot:password123@ds137483.mlab.com:37483/
     }
 });
 
+
+//DEBUG
+// var data = "";
+// dataservice.getById("Uaaef65351a31aa56d37d5321d23545f6d")
+//         .then((result) => {
+//             if(!result){
+//                 data = "You have no event!";
+//             }
+//             else{
+//                 var i = 1;
+//                 data += "Your list : <br>";
+//                 result.messages.forEach(element => {
+//                     data += i + ". " + element + "<br>";
+//                     i++;
+//                 });
+//             }
+//             console.log(data);
+//         })
+//         .catch((err) => {console.log(err)});
+
+
+
+
 app.set('port', (process.env.PORT || 3000));
 
 app.post('/callback', line.middleware(config), (req, res) => {
@@ -36,10 +59,10 @@ function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null);
   }
-  else if(event.message.text.split(' ')[0] === 'add' && event.message.text.split(' ').length != 1){
+  else if(event.message.text.split(' ')[0] === '/add' && event.message.text.split(' ').length != 1){
     var data = {
         kode : (event.source.groupId) ? event.source.groupId : event.source.userId,
-        message : event.message.text.substring(4, event.message.text.length)
+        message : event.message.text.substring(5, event.message.text.length)
     }
     console.log(data);
 
@@ -51,6 +74,29 @@ function handleEvent(event) {
         type: 'text',
         text: 'event added! xD'
     });
+  }
+  else if(event.message.text === '/show'){
+    var data = "";
+    var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
+    dataservice.getById(id)
+        .then((result) => {
+            if(!result){
+                data = "You have no event!";
+            }
+            else{
+                var i = 1;
+                data += "Your list : <br>";
+                result.messages.forEach(element => {
+                    data += i + ". " + element + "<br>";
+                    i++;
+                });
+            }
+            return client.replyMessage(event.replyToken, {
+                type: 'text',
+                text: data
+            });
+        })
+        .catch((err) => {console.log(err)});
   }
 }
 

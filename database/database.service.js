@@ -1,7 +1,8 @@
 var data = require('./database.model');
 
 module.exports = {
-    pushData
+    pushData,
+    getById
 }
 
 async function pushData(input) {
@@ -17,4 +18,8 @@ async function pushData(input) {
         const user = new data({ kode: input.kode,  messages: [input.message]});
         await user.save();
     }
+}
+
+async function getById(id) {
+    return await data.findOne({kode : id}).select('messages');
 }
