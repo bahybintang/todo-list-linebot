@@ -36,11 +36,11 @@ function handleEvent(event) {
     return Promise.resolve(null);
   }
   else if(event.message.text.split(' ')[0] === 'add' && event.message.text.split(' ').length != 1){
-    var data = {
-        id : (event.source.userId) ? event.source.userId : event.source.groupId,
-        message : event.message.text.substring(4, event.message.text.length)
-    }
-    app.post('/api/push', data);
+    // var data = {
+    //     id : (event.source.userId) ? event.source.userId : event.source.groupId,
+    //     message : event.message.text.substring(4, event.message.text.length)
+    // }
+    // app.post('/api/push', data);
     return client.replyMessage(event.replyToken, {
         type: 'text',
         text: 'event added! xD'
