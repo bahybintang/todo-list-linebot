@@ -132,7 +132,7 @@ function handleEvent(event) {
         .catch((err) => {console.log(err)});
   }
   else if(event.message.text === '/yusficeo'){
-      var data = "Y\NYU\NYUS\NYUSF\NYUSFI\NYUSFIC\NYUSFICE\NYUSFICEO\NYUSFICE\NYUSFIC\NYUSFI\NYUSF\NYUS\NYU\NYU";
+      var data = "Y\nYU\nYUS\nYUSF\nYUSFI\nYUSFIC\nYUSFICE\nYUSFICEO\nYUSFICE\nYUSFIC\nYUSFI\nYUSF\nYUS\nYU\nYU";
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: data
