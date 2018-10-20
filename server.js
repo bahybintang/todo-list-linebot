@@ -38,7 +38,7 @@ function handleEvent(event) {
   }
   else if(event.message.text.split(' ')[0] === 'add' && event.message.text.split(' ').length != 1){
     var data = {
-        kode : (event.source.userId) ? event.source.userId : event.source.groupId,
+        kode : (event.source.groupId) ? event.source.groupId : event.source.userId,
         message : event.message.text.substring(4, event.message.text.length)
     }
     console.log(data);
