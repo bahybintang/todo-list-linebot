@@ -2,7 +2,7 @@ const express = require('express');
 const line = require('@line/bot-sdk');
 var mongoose = require('mongoose');
 var db = require('./database/database.controller');
-const dataservice = require('./database.service');
+const dataservice = require('./database/database.service');
 
 
 const config = require('./config');
