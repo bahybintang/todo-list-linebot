@@ -88,7 +88,7 @@ function handleEvent(event) {
                 else{
                     result.messages.splice(index-1, 1);
                     dataservice.update(result);
-                    if(result.message.length === 0){
+                    if(result.messages.length === 0){
                         data = "You have no event!";
                     }
                     else{
@@ -107,6 +107,36 @@ function handleEvent(event) {
             });
         })
         .catch((err) => {console.log(err)});
+  }
+  else if(event.message.text === '/endall'){
+    var data = "";
+    var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
+    dataservice.getById(id)
+        .then((result) => {
+            if(!result || !result.messages.length){
+                data = "You have no event!";
+            }
+            else{
+                if(index > result.messages.length){
+                    data += "List is empty!";
+                }
+                result.messages.splice(0, result.messages.length);
+                dataservice.update(result);
+                data = "You have no event!";
+            }
+            return client.replyMessage(event.replyToken, {
+                type: 'text',
+                text: data
+            });
+        })
+        .catch((err) => {console.log(err)});
+  }
+  else if(event.message.text === '/yusficeo'){
+      var data = "Y\NYU\NYUS\NYUSF\NYUSFI\NYUSFIC\NYUSFICE\NYUSFICEO\NYUSFICE\NYUSFIC\NYUSFI\NYUSF\NYUS\NYU\NYU";
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: data
+      });
   }
 }
 
