@@ -21,7 +21,6 @@ mongoose.connect('mongodb://bintang-linebot:password123@ds137483.mlab.com:37483/
     }
 });
 
-
 app.set('port', (process.env.PORT || 3000));
 
 app.post('/callback', line.middleware(config), (req, res) => {
@@ -42,8 +41,7 @@ function handleEvent(event) {
         id : (event.source.userId) ? event.source.userId : event.source.groupId,
         message : event.message.text.substring(4, event.message.text.length)
     }
-    console.log(data);
-    dataservice.pushData(data);
+    dataservice.pushData(data).then((result) => {console.log(result)}).catch((err) => {console.log(err)});
     return client.replyMessage(event.replyToken, {
         type: 'text',
         text: 'event added! xD'

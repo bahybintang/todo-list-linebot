@@ -1,18 +1,20 @@
 var data = require('./database.model');
 
-module.exports = pushData;
+module.exports = {
+    pushData
+}
 
-async function pushData(input, next) {
+async function pushData(input) {
     // validate
-    if (await data.findOne({ id: input.id })) {
-        data.findByIdAndUpdate({ id : input.id }, { $push: { messages : input.message } }, function(err){
+    if (await data.findOne({ kode: input.kode })) {
+        data.updateOne({ kode : input.kode }, { $push: { messages : input.message } }, function(err){
             if(err){
-                next(err);
+                console.log(err);
             }
         });
     }
     else{
-        const user = new User({ id: input.id,  message: input.message});
+        const user = new data({ kode: input.kode,  messages: [input.message]});
         await user.save();
     }
 }
