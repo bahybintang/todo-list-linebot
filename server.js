@@ -87,7 +87,7 @@ function handleEvent(event) {
                 var i = 1;
                 data += "Your list : <br>";
                 result.messages.forEach(element => {
-                    data += i + ". " + element + "<br>";
+                    data += i + ". " + element + "\n";
                     i++;
                 });
             }
