@@ -2,7 +2,8 @@ var data = require('./database.model');
 
 module.exports = {
     pushData,
-    getById
+    getById,
+    update
 }
 
 async function pushData(input) {
@@ -21,5 +22,13 @@ async function pushData(input) {
 }
 
 async function getById(id) {
-    return await data.findOne({kode : id}).select('messages');
+    return await data.findOne({kode : id});
+}
+
+async function update(input){
+    data.updateOne({ kode : input.kode }, input, function(err){
+        if(err){
+            console.log(err);
+        }
+    });
 }

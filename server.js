@@ -1,7 +1,6 @@
 const express = require('express');
 const line = require('@line/bot-sdk');
 var mongoose = require('mongoose');
-var db = require('./database/database.controller');
 const dataservice = require('./database/database.service');
 
 
@@ -21,29 +20,6 @@ mongoose.connect('mongodb://bintang-linebot:password123@ds137483.mlab.com:37483/
     }
 });
 
-
-//DEBUG
-// var data = "";
-// dataservice.getById("Uaaef65351a31aa56d37d5321d23545f6d")
-//         .then((result) => {
-//             if(!result){
-//                 data = "You have no event!";
-//             }
-//             else{
-//                 var i = 1;
-//                 data += "Your list : <br>";
-//                 result.messages.forEach(element => {
-//                     data += i + ". " + element + "<br>";
-//                     i++;
-//                 });
-//             }
-//             console.log(data);
-//         })
-//         .catch((err) => {console.log(err)});
-
-
-
-
 app.set('port', (process.env.PORT || 3000));
 
 app.post('/callback', line.middleware(config), (req, res) => {
@@ -51,8 +27,6 @@ app.post('/callback', line.middleware(config), (req, res) => {
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result));
 });
-
-app.use('/api', db);
 
 const client = new line.Client(config);
 function handleEvent(event) {
@@ -72,7 +46,7 @@ function handleEvent(event) {
 
     return client.replyMessage(event.replyToken, {
         type: 'text',
-        text: 'event added! xD'
+        text: 'event added! xD\n#yusfiCEO'
     });
   }
   else if(event.message.text === '/show'){
@@ -80,16 +54,47 @@ function handleEvent(event) {
     var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
     dataservice.getById(id)
         .then((result) => {
-            if(!result){
+            if(!result || !result.messages.length){
                 data = "You have no event!";
             }
             else{
                 var i = 1;
-                data += "Your list : <br>";
+                data += "Your list : ";
                 result.messages.forEach(element => {
-                    data += i + ". " + element + "\n";
+                    data += "\n" + i + ". " + element;
                     i++;
                 });
+            }
+            return client.replyMessage(event.replyToken, {
+                type: 'text',
+                text: data
+            });
+        })
+        .catch((err) => {console.log(err)});
+  }
+  else if(event.message.text.split(' ')[0] === '/end' && event.message.text.split(' ').length != 1){
+    var data = "";
+    var index = parseInt(event.message.text.split(' ')[1]);
+    var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
+    dataservice.getById(id)
+        .then((result) => {
+            if(!result || !result.messages.length){
+                data = "You have no event!";
+            }
+            else{
+                if(index > result.messages.length){
+                    data += "List is empty!";
+                }
+                else{
+                    result.messages.splice(index-1, 1);
+                    dataservice.update(result);
+                    var i = 1;
+                    data += "Your list : ";
+                    result.messages.forEach(element => {
+                        data += "\n" + i + ". " + element;
+                        i++;
+                    });
+                }
             }
             return client.replyMessage(event.replyToken, {
                 type: 'text',
