@@ -1,5 +1,7 @@
 var data = require('./database.model');
 
+module.exports = pushData;
+
 async function pushData(input, next) {
     // validate
     if (await data.findOne({ id: input.id })) {
