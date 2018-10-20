@@ -2,6 +2,8 @@ const express = require('express');
 const line = require('@line/bot-sdk');
 var mongoose = require('mongoose');
 var db = require('./database/database.controller');
+const dataservice = require('./database.service');
+
 
 const config = require('./config');
 const app = express();
@@ -41,7 +43,7 @@ function handleEvent(event) {
         message : event.message.text.substring(4, event.message.text.length)
     }
     console.log(data);
-    app.post('/api/push', data);
+    dataservice.pushData(data);
     return client.replyMessage(event.replyToken, {
         type: 'text',
         text: 'event added! xD'
