@@ -33,7 +33,7 @@ function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null);
   }
-  else if(event.message.text.split(' ')[0] === '/add' && event.message.text.split(' ').length != 1 && event.message.text.split(' ') != ""){
+  else if(event.message.text.split(' ')[0] === '/add' && event.message.text.split(/\s+/).length != 1 && event.message.text.split(/\s+/)[1] != ""){
     var data = {
         kode : (event.source.groupId) ? event.source.groupId : event.source.userId,
         message : event.message.text.substring(5, event.message.text.length)
@@ -72,7 +72,7 @@ function handleEvent(event) {
         })
         .catch((err) => {console.log(err)});
   }
-  else if(event.message.text.split(' ')[0] === '/end' && event.message.text.split(' ').length != 1 && event.message.text.split(' ') != ""){
+  else if(event.message.text.split(' ')[0] === '/end' && event.message.text.split(/\s+/).length != 1 && event.message.text.split(/\s+/)[1] != ""){
     var data = "";
     var index = parseInt(event.message.text.split(' ')[1]);
     var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
