@@ -46,7 +46,7 @@ function handleEvent(event) {
 
     return client.replyMessage(event.replyToken, {
         type: 'text',
-        text: 'event added! xD\n#yusfiCEO'
+        text: 'event added! xD'
     });
   }
   else if(event.message.text === '/show'){
@@ -139,7 +139,7 @@ function handleEvent(event) {
       });
   }
   else if(event.message.text === '/info'){
-      var data = "Hi I'm to do list bot XD XD XD\n/add <input> \n/end <index>\n/show\n/endall\n/yusficeo\n/info";
+      var data = "Hi I'm to do list bot XD XD XD\n/add <input> \n/end <index>\n/show\n/endall\n/info";
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: data
