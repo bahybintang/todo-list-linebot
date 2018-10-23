@@ -32,8 +32,6 @@ app.post('/callback', line.middleware(config), (req, res) => {
 
 const client = new line.Client(config);
 function handleEvent(event) {
-    console.log("test");
-    console.log(event);
     if (event.type !== 'message' || event.message.type !== 'text') {
         return Promise.resolve(null);
     }
