@@ -5,9 +5,10 @@ const dataservice = require('./database/database.service');
 
 
 const config = require('./config');
+const dbConfig = require('./dbconfig')
 const app = express();
 
-mongoose.connect('mongodb://bintang-linebot:password123@ds137483.mlab.com:37483/linebot',
+mongoose.connect(dbConfig.connectionString,
     {
         reconnectTries: 100,
         reconnectInterval: 500,
