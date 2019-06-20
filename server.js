@@ -74,6 +74,14 @@ function handleEvent(event) {
     else if (event.message.text.split(' ')[0] === '/end' && event.message.text.split(/\s+/).length != 1 && event.message.text.split(/\s+/)[1] != "") {
         var data;
         var index = parseInt(event.message.text.split(' ')[1]);
+        if(index === NaN) {
+            data = {
+                type: "text",
+                text: "Wrong input!\nPlease use valid number"
+            }
+            return client.replyMessage(event.replyToken, data);
+        }
+
         var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
         dataservice.getById(id)
             .then((result) => {
@@ -201,6 +209,14 @@ function makeJSONEvent (messages) {
                     "contents": [`;
 
     messages.forEach(element => {
+        var el = element.replace(/\\n/g, "\\n")
+                        .replace(/\\'/g, "\\'")
+                        .replace(/\\"/g, '\\"')
+                        .replace(/\\&/g, "\\&")
+                        .replace(/\\r/g, "\\r")
+                        .replace(/\\t/g, "\\t")
+                        .replace(/\\b/g, "\\b")
+                        .replace(/\\f/g, "\\f")
         data += `{
             "type": "box",
             "layout": "baseline",
@@ -215,7 +231,7 @@ function makeJSONEvent (messages) {
                 },
                 {
                     "type": "text",
-                    "text": "${element}",
+                    "text": "${el}",
                     "size": "sm",
                     "wrap": true,
                     "flex": 9
