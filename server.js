@@ -64,7 +64,6 @@ function handleEvent(event) {
                     };
                 }
                 else {
-                    var i = 1;
                     data = makeJSONEvent(result.messages)
                 }
                 return client.replyMessage(event.replyToken, data);
@@ -157,7 +156,6 @@ function handleEvent(event) {
                     };
                 }
                 else {
-                    var i = 1;
                     data = makeJSONEvent(result.messages)
                 }
                 return client.replyMessage(event.replyToken, data);
@@ -237,7 +235,14 @@ function makeJSONEvent (messages) {
     });
     data = data.slice(0, -1)
     data += `]}]}}}`
-    return JSON.parse(data)
+    var hasil = JSON.parse(data)
+    i = 0;
+    messages.forEach(element => {
+        hasil.contents.body.contents[2].contents[i] = element;
+        i++;
+    })
+
+    return hasil
 }
 
 app.listen(app.get('port'), function (err) {
