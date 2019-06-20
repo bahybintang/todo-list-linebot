@@ -238,7 +238,7 @@ function makeJSONEvent (messages) {
     var hasil = JSON.parse(data)
     i = 0;
     messages.forEach(element => {
-        hasil.contents.body.contents[2].contents[i] = element;
+        hasil.contents.body.contents[2].contents[i].contents[1].text = element;
         i++;
     })
 
