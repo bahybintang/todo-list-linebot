@@ -74,7 +74,7 @@ function handleEvent(event) {
     else if (event.message.text.split(' ')[0] === '/end' && event.message.text.split(/\s+/).length != 1 && event.message.text.split(/\s+/)[1] != "") {
         var data;
         var index = parseInt(event.message.text.split(' ')[1]);
-        if(index === NaN) {
+        if(isNaN(index)) {
             data = {
                 type: "text",
                 text: "Wrong input!\nPlease use valid number"
