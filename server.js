@@ -237,11 +237,12 @@ function makeJSONEvent (messages) {
     data += `]}]}}}`
     var hasil = JSON.parse(data)
     i = 0;
+    console.log(hasil.contents.body.contents[2].contents[0].contents[1].text)
     messages.forEach(element => {
         hasil.contents.body.contents[2].contents[i].contents[1].text = element;
         i++;
     })
-
+    console.log(hasil.contents.body.contents[2].contents[0].contents[1].text)
     return hasil
 }
 
