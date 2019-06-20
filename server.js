@@ -156,7 +156,7 @@ function handleEvent(event) {
                     };
                 }
                 else {
-                    data = makeJSONEvent(result.messages)
+                    data = test(result.messages)
                 }
                 return client.replyMessage(event.replyToken, data);
             })
@@ -169,6 +169,71 @@ function handleEvent(event) {
         }
         return client.replyMessage(event.replyToken, data);
     }
+}
+
+function test(messages) {
+    var data = 
+    {
+        "type": "flex",
+        "altText": "YOUR TO DO LIST!",
+        "contents": {
+            "type": "bubble",
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "md",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "YOUR TO DO LIST!",
+                                "wrap": true,
+                                "weight": "bold",
+                                "color": "#1DB446",
+                                "margin": "lg"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "separator"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "lg",
+                        "contents": []
+                    }
+                ]
+            }
+        }
+    }
+    messages.forEach((el, i) => {
+        data.contents.body.contents[2].contents.push({
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": i,
+                    "flex": 1,
+                    "size": "sm",
+                    "weight": "bold",
+                    "color": "#666666"
+                },
+                {
+                    "type": "text",
+                    "text": el,
+                    "size": "sm",
+                    "wrap": true,
+                    "flex": 9
+                }
+            ]
+        })
+    })
+    return data
 }
 
 function makeJSONEvent (messages) {
@@ -237,12 +302,10 @@ function makeJSONEvent (messages) {
     data += `]}]}}}`
     var hasil = JSON.parse(data)
     i = 0;
-    console.log(hasil.contents.body.contents[2].contents[0].contents[1].text)
     messages.forEach(element => {
         hasil.contents.body.contents[2].contents[i].contents[1].text = element;
         i++;
     })
-    console.log(hasil.contents.body.contents[2].contents[0].contents[1].text)
     return hasil
 }
 
