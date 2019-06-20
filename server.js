@@ -217,7 +217,7 @@ function test(messages) {
             "contents": [
                 {
                     "type": "text",
-                    "text": string(i+1),
+                    "text": (i+1).toString(),
                     "flex": 1,
                     "size": "sm",
                     "weight": "bold",
