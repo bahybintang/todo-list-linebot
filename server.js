@@ -164,6 +164,7 @@ function handleEvent(event) {
 
 function makeJSONEvent (messages) {
     var i = 1;
+    var data = "";
     data += `"type": "flex",
     "altText": "YOUR TO DO LIST!",
     "contents": {
