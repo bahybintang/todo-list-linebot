@@ -209,14 +209,9 @@ function makeJSONEvent (messages) {
                     "contents": [`;
 
     messages.forEach(element => {
-        var el = element.replace(/\\n/g, "\\n")
-                        .replace(/\\'/g, "\\'")
-                        .replace(/\\"/g, '\\"')
-                        .replace(/\\&/g, "\\&")
-                        .replace(/\\r/g, "\\r")
-                        .replace(/\\t/g, "\\t")
-                        .replace(/\\b/g, "\\b")
-                        .replace(/\\f/g, "\\f")
+        var el = element.replace(/\n/g, "\\\\n")
+                        .replace(/\r/g, "\\\\r")
+                        .replace(/\t/g, "\\\\t")
         data += `{
             "type": "box",
             "layout": "baseline",
