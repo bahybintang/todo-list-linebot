@@ -134,12 +134,24 @@ function handleEvent(event) {
             })
             .catch((err) => { console.log(err) });
     }
-    else if (event.message.text === '/yusficeo') {
-        var data = "Y\nYU\nYUS\nYUSF\nYUSFI\nYUSFIC\nYUSFICE\nYUSFICEO\nYUSFICE\nYUSFIC\nYUSFI\nYUSF\nYUS\nYU\nY";
-        return client.replyMessage(event.replyToken, {
-            type: 'text',
-            text: data
-        });
+    else if (event.message.text === '/test') {
+        var data;
+        var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
+        dataservice.getById(id)
+            .then((result) => {
+                if (!result || !result.messages.length) {
+                    data = {
+                        type: 'text',
+                        text: "You have no event!"
+                    };
+                }
+                else {
+                    var i = 1;
+                    data = makeJSONEvent(result.messages)
+                }
+                return client.replyMessage(event.replyToken, data);
+            })
+            .catch((err) => { console.log(err) });
     }
     else if (event.message.text === '/info') {
         var data = "Hi I'm to do list bot XD XD XD\n/add <input> \n/end <index>\n/show\n/endall\n/info";
@@ -148,6 +160,69 @@ function handleEvent(event) {
             text: data
         });
     }
+}
+
+function makeJSONEvent (messages) {
+    var i = 1;
+    data += `"type": "flex",
+    "altText": "YOUR TO DO LIST!",
+    "contents": {
+        "type": "bubble",
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "md",
+            "contents": [
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "YOUR TO DO LIST!",
+                            "wrap": true,
+                            "weight": "bold",
+                            "color": "#1DB446",
+                            "margin": "lg"
+                        }
+                    ]
+                },
+                {
+                    "type": "separator"
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "margin": "lg",
+                    "contents": [`;
+
+    messages.forEach(element => {
+        data += `{
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": "${i}.",
+                    "flex": 2,
+                    "size": "sm",
+                    "weight": "bold",
+                    "color": "#666666"
+                },
+                {
+                    "type": "text",
+                    "text": "${element}",
+                    "size": "sm",
+                    "wrap": true,
+                    "flex": 8
+                }
+            ]
+        },`
+        i++;
+    });
+    data = data.slice(0, -1)
+    data += `]}]}}}`
+    return JSON.parse(data)
 }
 
 app.listen(app.get('port'), function (err) {
