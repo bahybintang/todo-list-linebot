@@ -31,7 +31,7 @@ eventHandler = async (req, res, next) => {
 
         res.status(200).json(result)
     } catch (err) {
-        console.error(err)
+        console.error(err.message)
         res.status(500).send()
     }
 }
@@ -40,6 +40,7 @@ eventHandler = async (req, res, next) => {
 handleEvent = async (event) => {
     let { text } = _.get(event, 'message.text')
 
+    console.log("TEXT", text);
     // Check if event type is message and message type is text
     if (event.type !== 'message' || event.message.type !== 'text') {
         return Promise.resolve(null)
