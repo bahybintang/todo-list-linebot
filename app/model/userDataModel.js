@@ -9,6 +9,7 @@ const dbSchema = mongoose.Schema({
         type: String
     }]
 });
+
 dbSchema.index({ kode: 1, messages: 1 });
 
 module.exports = mongoose.model('users_data', dbSchema, 'users_data');
