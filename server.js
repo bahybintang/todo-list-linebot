@@ -49,105 +49,191 @@ function handleEvent(event) {
 
         return client.replyMessage(event.replyToken, {
             type: 'text',
-            text: 'event added! xD'
+            text: 'Event added!'
         });
     }
     else if (event.message.text === '/show') {
-        var data = "";
+        var data;
         var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
         dataservice.getById(id)
             .then((result) => {
                 if (!result || !result.messages.length) {
-                    data = "You have no event!";
+                    data = {
+                        type: 'text',
+                        text: "You have no event!"
+                    };
                 }
                 else {
-                    var i = 1;
-                    data += "Your list : ";
-                    result.messages.forEach(element => {
-                        data += "\n" + i + ". " + element;
-                        i++;
-                    });
+                    data = makeJSONEvent(result.messages)
                 }
-                return client.replyMessage(event.replyToken, {
-                    type: 'text',
-                    text: data
-                });
+                return client.replyMessage(event.replyToken, data);
             })
             .catch((err) => { console.log(err) });
     }
     else if (event.message.text.split(' ')[0] === '/end' && event.message.text.split(/\s+/).length != 1 && event.message.text.split(/\s+/)[1] != "") {
-        var data = "";
+        var data;
         var index = parseInt(event.message.text.split(' ')[1]);
+        if(isNaN(index)) {
+            data = {
+                type: "text",
+                text: "Wrong input!\nPlease use valid number"
+            }
+            return client.replyMessage(event.replyToken, data);
+        }
+
         var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
         dataservice.getById(id)
             .then((result) => {
                 if (!result || !result.messages.length) {
-                    data = "You have no event!";
+                    data = {
+                        type: 'text',
+                        text: "You have no event!"
+                    };
                 }
                 else {
                     if (index > result.messages.length) {
-                        data += "List is empty!";
+                        data = {
+                            type: 'text',
+                            text: "List is empty!"
+                        };
                     }
                     else {
                         result.messages.splice(index - 1, 1);
                         dataservice.update(result);
                         if (result.messages.length === 0) {
-                            data = "You have no event!";
+                            data = {
+                                type: 'text',
+                                text: "You have no event!"
+                            };
                         }
                         else {
-                            var i = 1;
-                            data += "Your list : ";
-                            result.messages.forEach(element => {
-                                data += "\n" + i + ". " + element;
-                                i++;
-                            });
+                            data = makeJSONEvent(result.messages);
                         }
                     }
                 }
-                return client.replyMessage(event.replyToken, {
-                    type: 'text',
-                    text: data
-                });
+                return client.replyMessage(event.replyToken, data);
             })
             .catch((err) => { console.log(err) });
     }
     else if (event.message.text === '/endall') {
-        var data = "";
+        var data;
         var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
         dataservice.getById(id)
             .then((result) => {
                 if (!result || !result.messages.length) {
-                    data = "You have no event!";
+                    data = {
+                        type: 'text',
+                        text: "You have no event!"
+                    };
                 }
                 else {
                     if (index > result.messages.length) {
-                        data += "List is empty!";
+                        data = {
+                            type: 'text',
+                            text: "List is empty!"
+                        };
                     }
                     result.messages.splice(0, result.messages.length);
                     dataservice.update(result);
-                    data = "You have no event!";
+                    data = {
+                        type: 'text',
+                        text: "You have no event!"
+                    };
                 }
-                return client.replyMessage(event.replyToken, {
-                    type: 'text',
-                    text: data
-                });
+                return client.replyMessage(event.replyToken, data);
             })
             .catch((err) => { console.log(err) });
     }
-    else if (event.message.text === '/yusficeo') {
-        var data = "Y\nYU\nYUS\nYUSF\nYUSFI\nYUSFIC\nYUSFICE\nYUSFICEO\nYUSFICE\nYUSFIC\nYUSFI\nYUSF\nYUS\nYU\nY";
-        return client.replyMessage(event.replyToken, {
-            type: 'text',
-            text: data
-        });
+    else if (event.message.text === '/test') {
+        var data;
+        var id = (event.source.groupId) ? event.source.groupId : event.source.userId;
+        dataservice.getById(id)
+            .then((result) => {
+                if (!result || !result.messages.length) {
+                    data = {
+                        type: 'text',
+                        text: "You have no event!"
+                    };
+                }
+                else {
+                    data = makeJSONEvent(result.messages)
+                }
+                return client.replyMessage(event.replyToken, data);
+            })
+            .catch((err) => { console.log(err) });
     }
     else if (event.message.text === '/info') {
-        var data = "Hi I'm to do list bot XD XD XD\n/add <input> \n/end <index>\n/show\n/endall\n/info";
-        return client.replyMessage(event.replyToken, {
+        var data = {
             type: 'text',
-            text: data
-        });
+            text: "Hi I'm to do list bot!\n1. Add to do list: /add <input> \n2. End to do list: /end <index>\n3. Show list: /show\n4. End all to do list: /endall\n5. This info: /info"
+        }
+        return client.replyMessage(event.replyToken, data);
     }
+}
+
+function makeJSONEvent (messages) {
+    var data = 
+    {
+        "type": "flex",
+        "altText": "YOUR TO DO LIST!",
+        "contents": {
+            "type": "bubble",
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "md",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "YOUR TO DO LIST!",
+                                "wrap": true,
+                                "weight": "bold",
+                                "color": "#1DB446",
+                                "margin": "lg"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "separator"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "lg",
+                        "contents": []
+                    }
+                ]
+            }
+        }
+    }
+    messages.forEach((el, i) => {
+        data.contents.body.contents[2].contents.push({
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": (i+1).toString(),
+                    "flex": 1,
+                    "size": "sm",
+                    "weight": "bold",
+                    "color": "#666666"
+                },
+                {
+                    "type": "text",
+                    "text": el,
+                    "size": "sm",
+                    "wrap": true,
+                    "flex": 9
+                }
+            ]
+        })
+    })
+    return data
 }
 
 app.listen(app.get('port'), function (err) {
