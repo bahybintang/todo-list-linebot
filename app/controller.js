@@ -40,8 +40,6 @@ eventHandler = async (req, res, next) => {
 handleEvent = async (event) => {
     let text = _.get(event, 'message.text')
 
-    console.log(text);
-
     // Check if event type is message and message type is text
     if (event.type !== 'message' || event.message.type !== 'text') {
         return Promise.resolve(null)
@@ -59,7 +57,6 @@ handleEvent = async (event) => {
         let kode = event.source.groupId || event.source.userId
 
         let userEvent = await UserData.findOne({ kode }).lean()
-        console.log(userEvent);
 
         if (!userEvent || !userEvent.messages.length) {
             return client.replyMessage(event.replyToken, eventEmpty)

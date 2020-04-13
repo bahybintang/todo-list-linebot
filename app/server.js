@@ -1,6 +1,7 @@
 const express = require('express')
 const line = require('@line/bot-sdk')
 const logger = require('morgan')
+require('./database')
 require('dotenv').config()
 
 const { eventHandler } = require('./controller')
