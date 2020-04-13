@@ -38,14 +38,7 @@ eventHandler = async (req, res, next) => {
 
 // Helpers
 handleEvent = async (event) => {
-    let { text } = _.get(event, 'message.text')
-
-    console.log("TEXT", event.message.text);
-
-    // If text empty
-    if (!text || text == '') {
-        return Promise.resolve(null)
-    }
+    let text = _.get(event, 'message.text')
 
     // Check if event type is message and message type is text
     if (event.type !== 'message' || event.message.type !== 'text') {
