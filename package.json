@@ -5,19 +5,24 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node ./app/server.js",
+    "dev": "nodemon ./app/server.js"
   },
   "author": "bintang bahy",
   "license": "ISC",
   "dependencies": {
     "@line/bot-sdk": "^6.3.0",
+    "dotenv": "^8.2.0",
     "express": "^4.16.4",
+    "lodash": "^4.17.15",
     "mongoose": "^5.3.4"
   },
   "engines": {
     "node": "8.12.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahybintang/linebot.git"
