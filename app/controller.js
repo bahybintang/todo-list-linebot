@@ -57,6 +57,7 @@ handleEvent = async (event) => {
         let kode = event.source.groupId || event.source.userId
 
         let userEvent = await UserData.findOne({ kode }).lean()
+        console.log(userEvent);
 
         if (!userEvent || !userEvent.messages.length) {
             return client.replyMessage(event.replyToken, eventEmpty)
